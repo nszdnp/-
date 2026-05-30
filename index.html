@@ -1,0 +1,418 @@
+<html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>光影瞬间 | 摄影作品集</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1a1a1a',
+                        secondary: '#3d3d3d',
+                        accent: '#64748b',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            }
+            .text-shadow-lg {
+                text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            }
+            .backdrop-blur {
+                backdrop-filter: blur(8px);
+            }
+        }
+    </style>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        .gallery-item {
+            overflow: hidden;
+        }
+        
+        .gallery-item img {
+            transition: transform 0.5s ease, filter 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+        
+        .gallery-overlay {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .nav-scrolled {
+            background-color: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .lazy-image {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .lazy-image.loaded {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-primary text-white font-sans">
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold tracking-wider">光影瞬间</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="hover:text-gray-300 transition-colors">首页</a>
+                <a href="#gallery" class="hover:text-gray-300 transition-colors">作品集</a>
+                <a href="#about" class="hover:text-gray-300 transition-colors">关于</a>
+                <a href="#contact" class="hover:text-gray-300 transition-colors">联系</a>
+            </div>
+            <button id="mobile-menu-btn" class="md:hidden text-2xl">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-primary/95 backdrop-blur-lg">
+            <div class="container mx-auto px-6 py-4 flex flex-col space-y-4">
+                <a href="#home" class="py-2 hover:text-gray-300 transition-colors">首页</a>
+                <a href="#gallery" class="py-2 hover:text-gray-300 transition-colors">作品集</a>
+                <a href="#about" class="py-2 hover:text-gray-300 transition-colors">关于</a>
+                <a href="#contact" class="py-2 hover:text-gray-300 transition-colors">联系</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="images/home.jpg" alt="Hero Background" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black/0"></div>
+        </div>
+        <div class="relative z-10 text-center px-6">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-shadow-lg tracking-wide">
+                光影瞬间
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-200 mb-8 text-shadow max-w-2xl mx-auto">
+                用镜头捕捉自然之美，记录那些转瞬即逝的诗意时刻
+            </p>
+            <a href="#gallery" class="inline-block px-8 py-3 border-2 border-white hover:bg-white hover:text-primary transition-all duration-300 text-lg">
+                浏览作品
+            </a>
+        </div>
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fa fa-chevron-down text-2xl text-white/70"></i>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-secondary/20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">摄影作品集</h2>
+                <p class="text-accent text-lg max-w-2xl mx-auto">
+                    每一张照片都是一个故事，记录着大自然的鬼斧神工与生命的细腻之美
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Photo 1: Snow Mountain -->
+                <div class="gallery-item relative rounded-xl overflow-hidden shadow-2xl group fade-in">
+                    <img data-src="images/0.jpg" alt="九寨远景" class="lazy-image w-full h-80 object-cover">
+                    <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-1">九寨远景</h3>
+                            <p class="text-gray-300 text-sm">川西高原 · 2025</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Photo 2: Fern & Insect -->
+                <div class="gallery-item relative rounded-xl overflow-hidden shadow-2xl group fade-in">
+                    <img data-src="images/1.jpg" alt="蕨类植物与昆虫" class="lazy-image w-full h-80 object-cover">
+                    <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-1">山中风车</h3>
+                            <p class="text-gray-300 text-sm">路行远山 · 2026</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Photo 3: Mountain Road -->
+                <div class="gallery-item relative rounded-xl overflow-hidden shadow-2xl group fade-in">
+                    <img data-src="images/2.jpg" alt="盘山公路" class="lazy-image w-full h-80 object-cover">
+                    <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-1">赛博隧道</h3>
+                            <p class="text-gray-300 text-sm">高速隧道 · 2025</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Photo 4: Flowers -->
+                <div class="gallery-item relative rounded-xl overflow-hidden shadow-2xl group fade-in">
+                    <img data-src="images/3.jpg" alt="多肉" class="lazy-image w-full h-80 object-cover">
+                    <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-1">多肉植物</h3>
+                            <p class="text-gray-300 text-sm">望海花都 · 2025</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Photo 5: Stream -->
+                <div class="gallery-item relative rounded-xl overflow-hidden shadow-2xl group fade-in">
+                    <img data-src="images/4.jpg" alt="乐园" class="lazy-image w-full h-80 object-cover">
+                    <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-1">童真乐园</h3>
+                            <p class="text-gray-300 text-sm">环球中心海洋公园 · 2026</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Photo 6: B&W Flower -->
+                <div class="gallery-item relative rounded-xl overflow-hidden shadow-2xl group fade-in">
+                    <img data-src="images/5.jpg" alt="芦苇" class="lazy-image w-full h-80 object-cover">
+                    <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-1">素净之美</h3>
+                            <p class="text-gray-300 text-sm">川西高原 · 2026</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-primary">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="lg:w-1/2 fade-in">
+                    <img src="images/11.jpg" alt="About" class="rounded-2xl shadow-2xl w-full">
+                </div>
+                <div class="lg:w-1/2 fade-in">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">关于</h2>
+                    <p class="text-gray-300 text-lg mb-6 leading-relaxed">
+                        我是一名日常摄影师，痴迷于用镜头记录生活中的点滴感触。从巍峨的高山到热闹的街景，从奔腾的溪流到静谧的花朵，每一个瞬间都值得被珍藏。
+                    </p>
+                    <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+                        摄影于我而言，不仅仅是记录，更是与生命对话的方式。在每一次按下快门的瞬间，我都能感受到时间的凝固，以及生命赋予我们的无限美好。
+                    </p>
+                    <div class="flex flex-wrap gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-white">3+</div>
+                            <div class="text-accent">年摄影经验</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-white">500+</div>
+                            <div class="text-accent">摄影作品</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-white">20+</div>
+                            <div class="text-accent">行摄地点</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-secondary/20">
+        <div class="container mx-auto px-6 text-center">
+            <div class="max-w-2xl mx-auto fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">联系我</h2>
+                <p class="text-gray-300 text-lg mb-10">
+                    如果您对我的作品感兴趣，或者有合作意向，欢迎通过下方链接随时与我联系~
+                </p>
+                <div class="flex justify-center space-x-6 mb-10">
+                    <a href="https://www.instagram.com/linli_614" target="_blank" class="w-14 h-14 bg-primary rounded-full flex items-center justify-center hover:bg-accent transition-colors">
+                        <i class="fa fa-instagram text-2xl"></i>
+                    </a>
+                    <a href="https://xhslink.com/m/paOwlVX1PP" target="_blank" class="w-14 h-14 bg-primary rounded-full flex items-center justify-center hover:bg-accent transition-colors p-2">
+                        <svg class="w-8 h-8" viewBox="0 0 1024 1024" fill="currentColor">
+                            <path d="M722.6 256.4c-74.4-72.6-185.6-72.6-260 0-41.8 40.8-52.6 99.2-29.6 151.2l-50.6 88.8c-5.8-0.8-11.6-1.2-17.4-1.2-106 0-192 86-192 192s86 192 192 192 192-86 192-192c0-44.6-15.4-85.6-41.6-118.6l58.4-101.6c24.2 28.8 62.2 44.8 103 44.8 75.2 0 136.2-61 136.2-136.2 0-39.6-17.2-75-44.2-99.4l-46.2-36.8zM580.8 497.8l-58.4 101.6c-27.2-19.6-60.8-31.2-96.8-31.2-30.8 0-60.4 8.4-86.2 23.2l-57.2-93.6c9-21 23.6-39.2 42.8-52.8 56.2-39.6 133-32.6 181.6 16.6 20.2 20.4 34.6 45.6 42.2 73.2l32 61.2z"/>
+                        </svg>
+                    </a>
+                    <button id="wechat-btn" class="w-14 h-14 bg-primary rounded-full flex items-center justify-center hover:bg-accent transition-colors">
+                        <i class="fa fa-wechat text-2xl"></i>
+                    </button>
+                    <a href="mailto:614931131@qq.com" class="w-14 h-14 bg-primary rounded-full flex items-center justify-center hover:bg-accent transition-colors">
+                        <i class="fa fa-envelope text-2xl"></i>
+                    </a>
+                </div>
+                <a href="mailto:614931131@qq.com" class="inline-block px-8 py-4 bg-white text-primary font-semibold rounded-lg hover:bg-gray-200 transition-colors">
+                    发送邮件
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-primary border-t border-gray-800">
+        <div class="container mx-auto px-6 text-center text-gray-500">
+            <p>© 2025 LINLi摄影工作室. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4 backdrop-blur-sm">
+        <button id="close-lightbox" class="absolute top-6 right-6 text-white text-3xl hover:text-gray-300 z-10">
+            <i class="fa fa-times"></i>
+        </button>
+        <img id="lightbox-img" src="" alt="" class="max-w-[80vw] max-h-[80vh] object-contain border-4 border-white rounded-lg shadow-2xl">
+        <p id="lightbox-caption" class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white text-lg"></p>
+    </div>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Fade in animation on scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        fadeElements.forEach(el => observer.observe(el));
+
+        // Lazy loading images
+        const lazyImages = document.querySelectorAll('.lazy-image');
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.onload = () => {
+                        img.classList.add('loaded');
+                    };
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+
+        lazyImages.forEach(img => imageObserver.observe(img));
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const closeLightbox = document.getElementById('close-lightbox');
+
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
+                lightboxImg.src = img.src;
+                lightboxImg.style.maxWidth = '80vw';
+                lightboxImg.style.maxHeight = '80vh';
+                lightboxImg.style.backgroundColor = 'transparent';
+                lightboxImg.style.padding = '0';
+                if (lightboxCaption) lightboxCaption.textContent = '';
+                lightbox.classList.remove('hidden');
+                lightbox.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        closeLightbox.addEventListener('click', () => {
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+            document.body.style.overflow = '';
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close lightbox with ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // WeChat button click to show QR code
+        const wechatBtn = document.getElementById('wechat-btn');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        if (wechatBtn) {
+            wechatBtn.addEventListener('click', () => {
+                lightboxImg.src = 'images/wechat.png';
+                lightboxImg.alt = '微信二维码';
+                lightboxImg.style.maxWidth = '380px';
+                lightboxImg.style.maxHeight = '380px';
+                lightboxImg.style.backgroundColor = 'white';
+                lightboxImg.style.padding = '12px';
+                if (lightboxCaption) lightboxCaption.textContent = '扫码添加我为好友';
+                lightbox.classList.remove('hidden');
+                lightbox.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            });
+        }
+    </script>
+
+
+</body></html>
